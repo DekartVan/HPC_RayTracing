@@ -39,7 +39,7 @@ __device__ vec3 random_in_unit_sphere(curandState* local_rand_state) {
 __device__ vec3 color(const ray& r, hitable** world, curandState* local_rand_state) {
     ray cur_ray = r;
     float cur_attenuation = 1.0f;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 5; i++) {
         hit_record rec;
         if ((*world)->hit(cur_ray, 0.001f, FLT_MAX, rec)) {
             vec3 target = rec.p + rec.normal + random_in_unit_sphere(local_rand_state);
@@ -49,7 +49,7 @@ __device__ vec3 color(const ray& r, hitable** world, curandState* local_rand_sta
         else {
             vec3 unit_direction = unit_vector(cur_ray.direction());
             float t = 0.5f * (unit_direction.y() + 1.0f);
-            vec3 c = (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+            vec3 c = (1.0f - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.1, 0.2, 1.0);
             return cur_attenuation * c;
         }
     }
